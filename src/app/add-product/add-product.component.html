@@ -1,0 +1,114 @@
+<div class="add-product-page-large">
+  <div class="form-card-large">
+    <h2 class="card-title-large">Add New Product</h2>
+
+    <form (ngSubmit)="addProduct()" #productForm="ngForm" class="product-form-large" novalidate>
+      <div class="field-large">
+        <label class="label-text-large">Product Name *</label>
+        <input
+          name="name"
+          [(ngModel)]="name"
+          required
+          class="input-large"
+          placeholder="Enter product name" />
+      </div>
+
+      <div class="field-large">
+        <label class="label-text-large">Description</label>
+        <textarea
+          name="description"
+          [(ngModel)]="description"
+          rows="8"
+          class="textarea-large"
+          placeholder="Write a clear, detailed description"></textarea>
+      </div>
+
+      <div class="field-row-large">
+        <div class="field-half-large">
+          <label class="label-text-large">Price *</label>
+          <input
+            name="price"
+            type="number"
+            [(ngModel)]="price"
+            required
+            min="0"
+            step="0.01"
+            class="input-large"
+            placeholder="0.00" />
+        </div>
+
+        <div class="field-half-large">
+          <label class="label-text-large">Stock</label>
+          <input
+            name="stock"
+            type="number"
+            [(ngModel)]="stock"
+            min="0"
+            class="input-large"
+            placeholder="Quantity" />
+        </div>
+      </div>
+
+      <div class="field-row-large">
+        <div class="field-half-large">
+          <label class="label-text-large">Category</label>
+          <input
+            name="category"
+            [(ngModel)]="category"
+            class="input-large"
+            placeholder="e.g. Smartphones" />
+        </div>
+
+        <div class="field-half-large">
+          <label class="label-text-large">Product Image</label>
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="file-input-large" />
+        </div>
+      </div>
+
+      <!-- <div class="form-actions-large">
+        <button type="submit" [disabled]="productForm.invalid" class="btn-primary-large">
+          Add Product
+        </button>
+        <button type="button" class="btn-ghost-large" (click)="clearForm()">
+          Reset
+        </button>
+      </div>
+
+      <p *ngIf="message" [ngClass]="{'status-success': success, 'status-error': !success}" class="status-large">
+        {{ message }}
+      </p> -->
+
+      <div class="form-actions-large">
+        <button
+          type="submit"
+          [disabled]="productForm.invalid || loading"
+          class="btn-primary-large"
+        >
+          <span *ngIf="!loading">Add Product</span>
+          <span *ngIf="loading" class="spinner"></span> <!-- Spinner -->
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost-large"
+          (click)="clearForm()"
+          [disabled]="loading"
+        >
+          Reset
+        </button>
+      </div>
+
+      <p
+        *ngIf="message"
+        [ngClass]="{ 'status-success': success, 'status-error': !success }"
+        class="status-large"
+      >
+        {{ message }}
+      </p>
+
+    </form>
+  </div>
+</div>

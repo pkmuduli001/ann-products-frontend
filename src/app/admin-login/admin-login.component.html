@@ -1,0 +1,12 @@
+<div class="admin-login-container">
+  <h2>Admin Login</h2>
+
+  <input [(ngModel)]="email" placeholder="Admin Email" type="email" />
+  <input [(ngModel)]="password" placeholder="Password" type="password" />
+
+  <div class="btn-group">
+    <button (click)="loginAsAdmin()">Login as Admin</button>
+  </div>
+
+  <p class="message">{{ message }}</p>
+</div>

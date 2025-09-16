@@ -1,0 +1,47 @@
+<div class="edit-product-page" *ngIf="product">
+  <div class="form-card">
+    <h2 class="card-title">✏️ Edit Product</h2>
+
+    <form (ngSubmit)="updateProduct()" #productForm="ngForm" class="product-form" novalidate>
+      <div class="field">
+        <span class="label-text">Product Name *</span>
+        <input name="name" [(ngModel)]="product.name" required />
+      </div>
+
+      <div class="field">
+        <span class="label-text">Description</span>
+        <textarea name="description" [(ngModel)]="product.description" rows="5"></textarea>
+      </div>
+
+      <div class="field">
+        <span class="label-text">Price *</span>
+        <input name="price" type="number" [(ngModel)]="product.price" required min="0" step="0.01" />
+      </div>
+
+      <div class="field">
+        <span class="label-text">Category</span>
+        <input name="category" [(ngModel)]="product.category" />
+      </div>
+
+      <div class="field">
+        <span class="label-text">Stock</span>
+        <input name="stock" type="number" [(ngModel)]="product.stock" min="0" />
+      </div>
+
+      <div class="field">
+        <span class="label-text">Product Image (optional)</span>
+        <input type="file" (change)="onFileSelected($event)" />
+        <img *ngIf="product.file" [src]="product.file " alt="Preview" class="preview-img" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="productForm.invalid || loading" class="btn primary">
+          {{ loading ? 'Updating...' : 'Update Product' }}
+        </button>
+        <button type="button" class="btn ghost" (click)="goBack()">Cancel</button>
+      </div>
+    </form>
+
+    <p *ngIf="statusMessage" class="status-message">{{ statusMessage }}</p>
+  </div>
+</div> 

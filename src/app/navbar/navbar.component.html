@@ -1,0 +1,33 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a routerLink="/">🏠 Ann Traders</a>
+  </div>
+
+  <div class="nav-right">
+    <!-- When not logged in -->
+    <ng-container *ngIf="!isLoggedIn">
+      <a routerLink="/login">User Login</a>
+      <a routerLink="/admin-login">Admin Login</a>
+    </ng-container>
+
+    <!-- When logged in -->
+    <ng-container *ngIf="isLoggedIn">
+      <span class="user-email">{{ userEmail }}</span>
+
+      <!-- Normal user options -->
+      <ng-container *ngIf="!isAdmin">
+        <a routerLink="/">Products</a>
+      </ng-container>
+
+      <!-- Admin options -->
+      <ng-container *ngIf="isAdmin">
+        <a routerLink="/admin-dashboard">Dashboard</a>
+        <a routerLink="/add-products">Add Product</a>
+        <!-- <a routerLink="/">View Products</a> -->
+      </ng-container>
+
+      <!-- Common logout -->
+      <button (click)="logout()">Logout</button>
+    </ng-container>
+  </div>
+</nav>

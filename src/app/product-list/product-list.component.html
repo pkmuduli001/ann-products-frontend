@@ -1,0 +1,48 @@
+<div class="product-list-container">
+  <h2>Our Products</h2>
+
+  <!-- 🔍 Search Bar -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchTerm"
+      (input)="filterProducts()"
+    />
+  </div>
+
+  <!-- ⚡ Loading/Error States -->
+  <div *ngIf="loading">Loading products...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- 🛍 Product Cards -->
+  <div class="products-grid" *ngIf="!loading && filteredProducts.length > 0">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+      <img
+        *ngIf="product.file"
+        [src]="product.file"
+        alt="{{ product.name }}"
+      />
+      <h3>{{ product.name }}</h3>
+      <p class="description">{{ product.description }}</p>
+      <p class="price">Price: ₹{{ product.price }}</p>
+      <p *ngIf="product.category">Category: {{ product.category }}</p>
+      <p *ngIf="product.stock !== undefined">Stock: {{ product.stock }}</p>
+
+      <!-- 🔘 Action Buttons -->
+      <div class="actions">
+        <!-- <button class="btn ghost" (click)="viewDetails(product)">View Details</button> -->
+         <button class="btn ghost" [routerLink]="['/product', product.id]">
+          View Details
+        </button>
+        <button class="btn primary" *ngIf="!isLoggedIn" routerLink="/login" >Login to Buy</button>
+        <button class="btn primary" *ngIf="isLoggedIn" (click)="buyNow(product)">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🚫 No Products -->
+  <div *ngIf="!loading && filteredProducts.length === 0">
+    No products found.
+  </div>
+</div>

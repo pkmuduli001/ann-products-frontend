@@ -1,0 +1,30 @@
+<div *ngIf="loading" class="spinner"></div>
+
+<div *ngIf="!loading && product" class="product-detail">
+  <div class="product-layout">
+    <!-- Left side: Image -->
+    <div class="image-container">
+      <img [src]="product.file" alt="{{ product.name }}" class="product-image" />
+    </div>
+
+    <!-- Right side: Details -->
+    <div class="details-container">
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
+      <p><strong>Price:</strong> ₹{{ product.price }}</p>
+      <p *ngIf="product.category"><strong>Category:</strong> {{ product.category }}</p>
+      <p *ngIf="product.stock !== undefined">
+        <strong>Stock:</strong> {{ product.stock }}
+      </p>
+
+      <div class="actions">
+        <button class="btn primary" *ngIf="!isLoggedIn" routerLink="/login" >Login to Buy</button>
+        <button class="btn primary" *ngIf="isLoggedIn" (click)="buyNow(product)">Buy Now</button>
+        
+        <button routerLink="/" class="btn ghost">Back to Products</button>
+      </div>
+
+      <p class="status-message">{{ message }}</p>
+    </div>
+  </div>
+</div>

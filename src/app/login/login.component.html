@@ -1,0 +1,27 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Login / Signup</h2>
+
+    <div class="form-group">
+      <input [(ngModel)]="email" placeholder="Email" type="email" />
+    </div>
+
+    <div class="form-group">
+      <input [(ngModel)]="password" placeholder="Password" type="password" />
+    </div>
+
+    <div class="btn-group">
+      <button class="btn-primary" (click)="login()">Login</button>
+      <button class="btn-secondary" (click)="signup()">Sign Up</button>
+    </div>
+
+    <!-- OTP Verification -->
+    <div *ngIf="awaitingVerification" class="verification-box">
+      <h3>Verify Your Email</h3>
+      <input [(ngModel)]="code" placeholder="Verification Code" />
+      <button class="btn-primary" (click)="verifySignup()">Verify</button>
+    </div>
+
+    <p class="message">{{ message }}</p>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="admin-products-container">
+  <h2>📦 Admin Product Management</h2>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Stock</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>
+            <img [src]="product.file" alt="{{ product.name }}" class="product-thumb" />
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>₹ {{ product.price }}</td>
+          <td>{{ product.category || '-' }}</td>
+          <td>{{ product.stock || 0 }}</td>
+          <td>{{ product.createdAt | date: 'short' }}</td>
+          <td>
+            <button class="btn edit" [routerLink]="['/product-edit', product.id]">Edit</button>
+            <button class="btn delete" (click)="removeProduct(product.id)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Spinner -->
+  <div *ngIf="loading" class="spinner"></div>
+
+  <!-- Error -->
+  <p *ngIf="error" class="error-message">{{ error }}</p>
+</div>
