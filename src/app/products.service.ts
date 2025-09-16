@@ -10,7 +10,7 @@ export interface Product {
   price: number;
   category?: string;
   stock?: number;
-  file?: string;  // image URL
+  file?: string;  
   createdAt?: string;
 }
 
