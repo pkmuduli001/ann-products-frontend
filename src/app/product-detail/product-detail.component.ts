@@ -48,6 +48,11 @@ export class ProductDetailComponent implements OnInit {
       next: () => alert(`Purchase notification sent for ${product.name}`),
       error: (err) => alert('Error sending notification: ' + err.message)
     });
+    this.productService.sendOrderToSQS(product.id, product.name, this.userEmail,this.userMessage ).subscribe({
+      next: () => alert(`Your order : ${product.name}, is in a SQS`),
+      error: (err) => alert('Error sending SQS: ' + err.message)
+    });
+    
     
   }
 }

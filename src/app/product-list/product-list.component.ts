@@ -60,9 +60,14 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    this.productService.notifyPurchase(product.id, product.name, this.userEmail,this.userMessage ).subscribe({
+    await this.productService.notifyPurchase(product.id, product.name, this.userEmail,this.userMessage ).subscribe({
       next: () => alert(`Purchase notification sent for ${product.name}`),
       error: (err) => alert('Error sending notification: ' + err.message)
+    });
+
+    await this.productService.sendOrderToSQS(product.id, product.name, this.userEmail,this.userMessage ).subscribe({
+      next: () => alert(`Your order : ${product.name}, is in a SQS`),
+      error: (err) => alert('Error sending SQS: ' + err.message)
     });
     
   }

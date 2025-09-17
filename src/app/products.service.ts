@@ -62,6 +62,12 @@ export class ProductsService {
     const body = { productId,productName, userEmail,userMessage  };
     return this.http.post(`${this.API_BASE}/notify`, body);
   }
+
+  sendOrderToSQS(productId: string,productName:string, userEmail: string,userMessage:string): Observable<any> {
+    const body = { productId,productName, userEmail,userMessage  };
+     return this.http.post(`${this.API_BASE}/buy-product-sqs`, body);
+  }
+
   async deleteProduct(productId: string) {
     const res = await fetch(`${this.API_BASE}/delete-product/${productId}`, {
       method: 'DELETE'
