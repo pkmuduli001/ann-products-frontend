@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { AdminProductListComponent } from './admin-product-list/admin-product-list.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { OrderListComponent } from './order-list/order-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,8 @@ import { EditProductComponent } from './edit-product/edit-product.component';
     NavbarComponent,
     ProductDetailComponent,
     AdminProductListComponent,
-    EditProductComponent
+    EditProductComponent,
+    OrderListComponent
   ],
   imports: [
     BrowserModule,

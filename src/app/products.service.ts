@@ -63,6 +63,10 @@ export class ProductsService {
     return this.http.post(`${this.API_BASE}/notify`, body);
   }
 
+  fetchMessages(): Observable<any> {
+    return this.http.get<any>(`${this.API_BASE}/fetch-product-sqs`);
+  }
+
   sendOrderToSQS(productId: string,productName:string, userEmail: string,userMessage:string): Observable<any> {
     const body = { productId,productName, userEmail,userMessage  };
      return this.http.post(`${this.API_BASE}/buy-product-sqs`, body);

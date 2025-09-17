@@ -9,6 +9,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { AdminProductListComponent } from './admin-product-list/admin-product-list.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { OrderListComponent } from './order-list/order-list.component';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'add-products', component: AddProductComponent, canActivate: [AdminGuard] },
   { path: 'admin-dashboard', component: AdminProductListComponent, canActivate: [AdminGuard] },
+  { path: 'orders-list', component: OrderListComponent, canActivate: [AdminGuard] },
   { path: 'product-edit/:id', component: EditProductComponent }
 ];
 
