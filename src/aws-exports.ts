@@ -24,8 +24,8 @@ const awsconfig: ResourcesConfig = {
         oauth: {
             domain: 'https://us-east-1a4qssxypl.auth.us-east-1.amazoncognito.com',
             scopes: ["email", "openid", "profile"],
-            redirectSignIn: ["http://localhost:4200/"],
-            redirectSignOut: ["http://localhost:4200/"],
+            redirectSignIn: ["http://localhost:4200/","https://staging.ddchhi2dw4mfd.amplifyapp.com"],
+            redirectSignOut: ["http://localhost:4200/","https://staging.ddchhi2dw4mfd.amplifyapp.com"],
             responseType: "code"
         }
       }
