@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'add-products', component: AddProductComponent, canActivate: [AdminGuard] },
   { path: 'admin-dashboard', component: AdminProductListComponent, canActivate: [AdminGuard] },
   { path: 'orders-list', component: OrderListComponent, canActivate: [AdminGuard] },
-  { path: 'product-edit/:id', component: EditProductComponent },
+  { path: 'product-edit/:id', component: EditProductComponent, canActivate: [AdminGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
