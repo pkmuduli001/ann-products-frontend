@@ -66,29 +66,5 @@ export class LoginComponent {
     this.message = '❌ Login failed: ' + err.message;
   }
 }
-  // async login() {
-  //   try {
-  //     await signIn({
-  //       username: this.email,
-  //       password: this.password,
-  //     });
-
-  //     const session = await fetchAuthSession();
-  //     const idToken = session.tokens?.idToken?.toString();
-
-  //     if (idToken) {
-  //       localStorage.setItem('token', idToken);
-        
-
-  //       this.message = '✅ Login successful! Redirecting...';
-
-  //       // 5️⃣ Navigate to Admin Dashboard
-  //       setTimeout(() => {
-  //         this.router.navigate(['/']);
-  //       }, 1000);
-  //     }
-  //   } catch (err: any) {
-  //     this.message = '❌ Login failed: ' + err.message;
-  //   }
-  // }
+ 
 }

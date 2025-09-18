@@ -1,7 +1,35 @@
+<div class="admin-products-container">
+  <h2>📦 Orders</h2>
 
-<h2>Orders</h2>
-<ul>
-  <li *ngFor="let order of this.sqs_orders">
-    {{ order}}
-  </li>
-</ul>
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Order id</th>
+          <th>Product name</th>
+          <th>Customer email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let order of sqs_orders">
+          
+          <td>{{ order.messageId }}</td>
+          <td>{{ order.body.productName }}</td>
+          <td>{{ order.body.userEmail }}</td>
+          <td>
+            <button class="btn delete" (click)="removeOrder(order.receiptHandle)">Approve</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Spinner -->
+  <div *ngIf="loading" class="spinner"></div>
+
+  <!-- Error -->
+  <p *ngIf="error" class="error-message">{{ error }}</p>
+</div>

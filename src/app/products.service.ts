@@ -14,6 +14,18 @@ export interface Product {
   createdAt?: string;
 }
 
+export interface Order {
+  messageId: string;
+  receiptHandle:string,
+  body:{
+    productId: string,
+    productName: string,
+    userEmail: string,
+    userMessage: string
+  }
+  
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   private API_BASE = 'https://ui5088zvwi.execute-api.us-east-1.amazonaws.com/dev'; 
@@ -65,6 +77,11 @@ export class ProductsService {
 
   fetchMessages(): Observable<any> {
     return this.http.get<any>(`${this.API_BASE}/fetch-product-sqs`);
+  }
+
+  deleteMessages(receiptHandle:string): Observable<any> {
+    const body={receiptHandle};
+    return this.http.post(`${this.API_BASE}/delete-sqs-order`, body);
   }
 
   sendOrderToSQS(productId: string,productName:string, userEmail: string,userMessage:string): Observable<any> {

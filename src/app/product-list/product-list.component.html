@@ -17,7 +17,8 @@
 
   <!-- 🛍 Product Cards -->
   <div class="products-grid" *ngIf="!loading && filteredProducts.length > 0">
-    <div class="product-card" *ngFor="let product of filteredProducts">
+    <div class="product-card" *ngFor="let product of filteredProducts"  [routerLink]="['/product', product.id]"
+     style="cursor: pointer;">
       <img
         *ngIf="product.file"
         [src]="product.file"
