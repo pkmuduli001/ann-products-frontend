@@ -70,6 +70,10 @@ export class ProductListComponent implements OnInit {
       error: (err) => alert('Error sending SQS: ' + err.message)
     });
     
+    await this.productService.sendOrderDynamo(product.id, product.name, this.userEmail,this.userMessage ).subscribe({
+      next: () => alert(`Your order : ${product.name}, is saved in the dynamodb`),
+      error: (err) => alert('Error sending to dynamodb: ' + err.message)
+    });
   }
 }
 

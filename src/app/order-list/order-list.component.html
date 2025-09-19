@@ -9,18 +9,21 @@
           <th>Order id</th>
           <th>Product name</th>
           <th>Customer email</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let order of sqs_orders">
+        <tr *ngFor="let order of orders">
           
-          <td>{{ order.messageId }}</td>
-          <td>{{ order.body.productName }}</td>
-          <td>{{ order.body.userEmail }}</td>
+          <td>{{ order.order_id }}</td>
+          <td>{{ order.productName }}</td>
+          <td>{{ order.userEmail }}</td>
+          <td>{{ order.status }}</td>
           <td>
-            <button class="btn delete" (click)="removeOrder(order.receiptHandle)">Approve</button>
+            <button class="btn approve" (click)="approveOrder(order.order_id)">Approve</button>
+            <button class="btn delete" (click)="rejectOrder(order.order_id)">Reject</button>
           </td>
         </tr>
       </tbody>

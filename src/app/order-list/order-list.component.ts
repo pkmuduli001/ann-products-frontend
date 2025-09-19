@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsService, Product, Order } from '../products.service';
+import { ProductsService, Product, SQSOrder ,Order} from '../products.service';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -9,7 +9,8 @@ import { AuthService } from '../auth.service';
 })
 export class OrderListComponent implements OnInit{
     products: Product[] = [];
-    sqs_orders:Order[]=[];
+    sqs_orders:SQSOrder[]=[];
+    orders:Order[]=[];
     filteredProducts: Product[] = [];
     loading = true;
     error = '';
@@ -20,24 +21,6 @@ export class OrderListComponent implements OnInit{
     
     constructor(private productService: ProductsService, private authService: AuthService) {}
   
-    // async ngOnInit() {
-  
-    // this.userEmail = await this.authService.getUserEmail();
-
-    // await this.productService.fetchMessages().subscribe({
-    //   next: (data:any) => {
-    //     this.sqs_orders=data.messages;
-    //     console.log(this.sqs_orders)
-        
-    //     this.loading = false;
-    //   },
-    //   error: (err:any) => {
-    //     this.error = '⚠️ Error fetching SQS';
-    //     this.loading = false;
-    //     console.error(err);
-    //   }
-    // });
-    // }
   
   
     async ngOnInit() {
@@ -58,6 +41,20 @@ export class OrderListComponent implements OnInit{
           console.error(err);
         }
       });
+
+      this.productService.fetchOrders().subscribe({
+        next: (data: any) => {
+          
+          this.orders=data;
+          console.log(this.orders)
+          this.loading = false;
+        },
+        error: (err: any) => {
+          this.error = '⚠️ Error fetching';
+          this.loading = false;
+          console.error(err);
+        }
+      });
     }
 
     
@@ -73,6 +70,29 @@ export class OrderListComponent implements OnInit{
       } catch (err: any) {
         alert('❌ Failed to approved order: ' + err.message);
       }
+    }
+    approveOrder(order_id:string){
+
+      this.productService.updateStatus(order_id,'done').subscribe({
+        next: (data: any) => {
+          alert('Order approved successfully!')
+        },
+        error: (err: any) => {
+          alert('Error fetching')
+        }
+      });
+      
+    }
+    rejectOrder(order_id:string){
+      this.productService.updateStatus(order_id,'reject').subscribe({
+        next: (data: any) => {
+          alert('Order rejected!')
+        },
+        error: (err: any) => {
+          alert('Error fetching')
+        }
+      });
+      
     }
   }
 

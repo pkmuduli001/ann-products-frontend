@@ -1,0 +1,253 @@
+
+
+# AWS Full Stack Developer Case Study: Ann Traders eCommerce Site
+
+---
+
+## Table of Contents
+
+1. Project Overview
+2. Technologies Used
+3. Frontend
+4. Backend
+5. AWS Lambda Functions
+6. Database
+7. Authentication & Authorization
+8. Image Storage
+9. Notifications
+10. Order Processing Microservice
+11. Admin Panel
+12. Security
+13. Deployment & CI/CD
+14. Logging & Monitoring
+15. Testing
+16. Conclusion
+
+---
+
+## 1. Project Overview
+
+Ann Traders is a cloud-native eCommerce web application built on AWS as a Proof of Concept (PoC) to demonstrate the use of various AWS services. It allows customers to browse products, view details, add items to their cart, and place orders. Admin users can manage products and orders through a secure dashboard. The main intent of this project is to leverage AWS serverless and container services to build a scalable, secure, and maintainable application architecture.
+
+---
+
+## 2. Technologies Used
+
+| Component              | Technology / Service                  |
+| ---------------------- | ------------------------------------- |
+| Frontend               | Angular                               |
+| Backend                | Node.js, Express, AWS Lambda          |
+| Order Microservice     | Node.js, Express, Docker, ECS Fargate |
+| Database               | Amazon DynamoDB                       |
+| Image Storage          | Amazon S3                             |
+| Authentication & Authz | AWS Cognito                           |
+| Frontend Hosting       | GitHub Actions->S3->AWS Amplify       |
+| order-service CI/CD    | GitHub Actions → ECR → ECS / Amplify  |
+| Notifications          | AWS SNS                               |
+| Order Queue            | AWS SQS                               |
+| Logging & Monitoring   | AWS CloudWatch                        |
+
+---
+
+## 3. Frontend
+
+* Developed using Angular framework.
+* Hosted on AWS Amplify for global availability.
+* Two distinct views:
+
+  * **Customer View**: Allows browsing products, viewing product details, adding items to the cart, and checking out.
+  * **Admin (Client) View**: Enables product management (add, edit, delete) and order approval/rejection.
+* Both views are secured using AWS Cognito JWT tokens for authentication and role-based access control.
+
+---
+
+
+## 4. Backend
+
+The backend is composed of two main components:
+
+### A. AWS Lambda Functions (Serverless)
+
+* Lightweight, scalable functions built using **Node.js and Express**, deployed via **AWS Lambda**.
+* Responsible for:
+
+  * **Product Management**: CRUD operations for products stored in DynamoDB.
+  * **Image Uploads**: Generate presigned URLs for S3 image uploads.
+  * **Notifications**: Send alerts to admins via SNS when new orders are placed.
+  * **Queue Management**: Push new orders to AWS SQS for asynchronous processing.
+  * **Authentication Middleware**: Enforces AWS Cognito JWT validation for all requests.
+
+### B. Order Service (Microservice)
+
+* A dedicated **Node.js + Express microservice** containerized and deployed on **AWS ECS Fargate**.
+* Designed for managing orders as a decoupled service for scalability and future extensibility.
+* Responsibilities include:
+
+  * Creating new orders
+  * Fetching all customer orders
+  * Approving or rejecting orders by admin
+* Integrated with:
+
+  * **Amazon DynamoDB** for persistent order storage
+  * **AWS ECR** for container registry
+  * **GitHub Actions** for CI/CD pipeline to build & deploy to ECS Fargate
+
+---
+
+## 5. AWS Lambda Functions
+
+Several Lambda functions power the backend services. Key functions include:
+
+* **Product Management Lambda**
+
+  * CRUD operations for products (Create, Read, Update, Delete).
+  * Integrates with DynamoDB to manage product records.
+
+* **Image Upload Lambda**
+
+  * Generates presigned URLs for secure and direct image uploads to Amazon S3.
+
+* **Notification Lambda**
+
+  * Triggers notifications to admins via AWS SNS when new orders are placed.
+
+* **Order Queue Lambda**
+
+  * Pushes new orders to AWS SQS for processing and confirmation workflows.
+
+* **Authentication Middleware**
+
+  * Validates AWS Cognito JWT tokens on every request to ensure secure access and role-based authorization.
+
+Each Lambda is designed to be stateless and scales automatically to handle demand.
+
+---
+
+## 6. Database
+
+* Amazon DynamoDB stores product and order data.
+* Provides fast, scalable, and serverless NoSQL data storage.
+
+---
+
+## 7. Authentication & Authorization
+
+* AWS Cognito manages user sign-up, sign-in, and JWT token issuance.
+* Role-based access control:
+
+  * Customers can browse and place orders.
+  * Admins can manage products and approve/reject orders.
+* Both frontend and backend APIs are protected using Cognito JWT tokens to ensure secure and authorized access.
+
+---
+
+## 8. Image Storage
+
+* Product images are securely uploaded to Amazon S3 using presigned URLs generated by backend Lambda functions.
+
+---
+
+## 9. Notifications
+
+* AWS SNS is used to notify admins about new orders.
+* Lambda functions trigger SNS notifications on order creation.
+
+---
+
+## 10. Order Processing Microservice (New Feature)
+
+### Overview
+
+* Dedicated **Order Management microservice** built with Node.js and Express.
+* Containerized and deployed on AWS ECS Fargate.
+* Integrates with DynamoDB to store and manage orders.
+* Provides REST API endpoints for order creation, retrieval, approval, and rejection.
+
+### Deployment & CI/CD
+
+* Source code pushed to GitHub.
+* GitHub Actions pipeline builds Docker image and pushes it to Amazon ECR.
+* ECS service running on Fargate pulls the latest image for deployment.
+* Frontend calls the ECS-hosted order API during checkout and admin order management.
+
+### API Endpoints
+
+| Endpoint                    | Method | Description            |
+| --------------------------- | ------ | ---------------------- |
+| `/orders`                   | POST   | Create a new order     |
+| `/orders`                   | GET    | Get all orders (admin) |
+| `/orders/{orderId}`         | PUT    | Approve an order       |
+| `/orders/{orderId}`         | PUT    | Reject an order        |
+
+---
+
+## 11. Admin Panel
+
+* Admin users have full control over product and order management.
+* Admin capabilities include:
+
+  * Add new products
+  * View product listings
+  * Edit existing products
+  * Delete products
+  * View all orders placed by customers
+  * Approve or reject orders from the order list
+* All admin actions are protected and accessible only via AWS Cognito authenticated sessions with appropriate roles.
+
+---
+
+## 12. Security
+
+* End-to-end security enforced with AWS Cognito JWT tokens.
+* Backend Lambda and ECS microservices validate tokens for every request.
+* Presigned URLs prevent unauthorized access to S3 buckets.
+* AWS IAM roles scoped for least privilege.
+
+---
+
+## 13. Deployment & CI/CD
+
+* **Frontend** deployed using AWS Amplify, with continuous deployment from GitHub.
+* **Backend Lambdas** deployed using AWS SAM or Amplify backend features.
+* **Order Microservice** deployed using GitHub Actions to build and push Docker images to ECR, then deploy ECS Fargate tasks.
+* CI/CD pipelines automate builds, tests, and deployments ensuring quick updates.
+
+---
+
+## 14. Logging & Monitoring
+
+* All Lambda functions and ECS tasks send logs to AWS CloudWatch.
+* CloudWatch monitors errors, performance metrics, and operational health.
+* Alerts can be configured for failure detection.
+
+---
+
+## 15. Testing
+
+* Manual testing of product browsing, cart, checkout, and order approval flows.
+* Automated unit and integration tests for backend APIs.
+* End-to-end testing on frontend using mocked API calls.
+* Post-deployment validation of ECS services and Lambda functions.
+
+---
+
+## 16. Conclusion
+
+Ann Traders is a cloud-native eCommerce application designed as a Proof of Concept (PoC) to showcase the power of AWS services in building scalable, secure, and modern full-stack applications. By combining serverless technologies (Lambda, DynamoDB, Cognito, S3, SNS, SQS) with containerized microservices (ECS Fargate), this project demonstrates a production-grade architecture that is modular, cost-efficient, and cloud-optimized.
+
+The architecture ensures:
+
+Separation of concerns through microservices and Lambda functions
+
+Role-based security with AWS Cognito
+
+Seamless CI/CD using GitHub Actions, ECR, and Amplify
+
+Real-time notifications and async processing with SNS and SQS
+
+Cloud-native observability using CloudWatch
+
+This project serves as a strong foundation for building enterprise-grade eCommerce platforms fully hosted on AWS.
+
+---
+

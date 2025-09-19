@@ -14,7 +14,7 @@ export interface Product {
   createdAt?: string;
 }
 
-export interface Order {
+export interface SQSOrder {
   messageId: string;
   receiptHandle:string,
   body:{
@@ -25,6 +25,18 @@ export interface Order {
   }
   
 }
+
+export interface Order {
+  userEmail: string,
+  userMessage: string,
+  createdAt: string,
+  order_id: string,
+  productId: string,
+  productName: string,
+  status: string,
+}
+
+
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
@@ -79,6 +91,11 @@ export class ProductsService {
     return this.http.get<any>(`${this.API_BASE}/fetch-product-sqs`);
   }
 
+  fetchOrders(): Observable<any> {
+    return this.http.get<any>(`http://34.229.132.245:4000/orders`);
+  }
+
+
   deleteMessages(receiptHandle:string): Observable<any> {
     const body={receiptHandle};
     return this.http.post(`${this.API_BASE}/delete-sqs-order`, body);
@@ -87,6 +104,16 @@ export class ProductsService {
   sendOrderToSQS(productId: string,productName:string, userEmail: string,userMessage:string): Observable<any> {
     const body = { productId,productName, userEmail,userMessage  };
      return this.http.post(`${this.API_BASE}/buy-product-sqs`, body);
+  }
+
+  sendOrderDynamo(productId: string,productName:string, userEmail: string,userMessage:string): Observable<any> {
+    const body = { productId,productName, userEmail,userMessage  };
+     return this.http.post(`http://34.229.132.245:4000/orders`, body);
+  }
+
+  updateStatus(id:string,status:string): Observable<any> {
+    const body = { status };
+    return this.http.put<any>(`http://34.229.132.245:4000/orders/${id}`,body);
   }
 
   async deleteProduct(productId: string) {

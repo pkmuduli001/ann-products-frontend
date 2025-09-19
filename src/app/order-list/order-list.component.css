@@ -65,6 +65,11 @@
   color: white;
 }
 
+.btn.approve {
+  background: green;
+  color: white;
+}
+
 .btn.delete:hover {
   background: #a71d2a;
 }
